@@ -1,7 +1,10 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
-        "stevearc/conform.nvim",
+        {
+            "stevearc/conform.nvim",
+            branch = "nvim-0.9"
+        },
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "hrsh7th/cmp-nvim-lsp",
@@ -16,7 +19,15 @@ return {
 
     config = function()
         require("conform").setup({
+            branch = "nvim-0.9",
             formatters_by_ft = {
+                lua = { "stylua" },
+                -- Conform will run multiple formatters sequentially
+                python = { "isort", "black" },
+                -- You can customize some of the format options for the filetype (:help conform.format)
+                rust = { "rustfmt", lsp_format = "fallback" },
+                -- Conform will run the first available formatter
+                javascript = { "prettierd", "prettier", stop_after_first = true },
             }
         })
         local cmp = require('cmp')
@@ -33,7 +44,6 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
-                "gopls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
