@@ -4,16 +4,16 @@ function ColorMyPenis(color)
 
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 end
 
 return {
     {
-        "rebelot/kanagawa.nvim",
+        "nyoom-engineering/oxocarbon.nvim",
         lazy = false,
         priority = 1000,
-        opts = {},
         config = function()
-            ColorMyPenis()
+            ColorMyPenis("oxocarbon")
         end
     },
     {
@@ -23,7 +23,11 @@ return {
             require('kanagawa').setup({
                 transparent = true
             })
-            ColorMyPenis();
         end
+    },
+    {
+        "nyoom-engineering/oxocarbon.nvim",
+        name = "oxocarbon",
+        opts = {},
     }
 }
