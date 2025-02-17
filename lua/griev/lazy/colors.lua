@@ -1,4 +1,4 @@
-function ColorMyPenis(color)
+function SetColorScheme(color)
 	color = color or "kanagawa"
 	vim.cmd.colorscheme(color)
 
@@ -13,7 +13,7 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            ColorMyPenis("oxocarbon")
+            SetColorScheme("oxocarbon")
         end
     },
     {
