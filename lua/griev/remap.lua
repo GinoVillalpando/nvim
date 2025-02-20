@@ -29,5 +29,16 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
+vim.keymap.set("n", "<leader>w", ":file<CR>")
+
+vim.keymap.set('i', '{<cr>', '{<cr>}<ESC>kA<CR>', {})
+closing_pairs = {'}', ')', ']', '"', "'", '>'}
+opening_pairs = {'{', '(', '[', '"', "'", '<'}
+for key, chr in pairs(opening_pairs)
+do
+  vim.keymap.set('i', chr, chr..closing_pairs[key]..'<esc>i', {})
+end
+
+
 -- find and replace word on cursor
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

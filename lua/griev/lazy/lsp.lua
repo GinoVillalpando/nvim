@@ -19,7 +19,6 @@ return {
 
     config = function()
         require("conform").setup({
-            branch = "nvim-0.9",
             formatters_by_ft = {
                 lua = { "stylua" },
                 -- Conform will run multiple formatters sequentially
