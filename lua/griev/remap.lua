@@ -14,9 +14,6 @@ vim.keymap.set("v", "J", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-f>", "<C-u>zz")
 
-
-vim.keymap.set("n", "<leader>l", "<cmd>LspRestart<cr>")
-
 -- copy paragraph
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
@@ -27,10 +24,13 @@ vim.keymap.set("n", "Q", "<nop>")
 -- make script executable
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
+-- i still dont know paste for something idk
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
+-- save current file
 vim.keymap.set("n", "<leader>w", ":file<CR>")
 
+-- auto closing pairs
 vim.keymap.set('i', '{<cr>', '{<cr>}<ESC>kA<CR>', {})
 closing_pairs = {'}', ')', ']', '"', "'", '>'}
 opening_pairs = {'{', '(', '[', '"', "'", '<'}
