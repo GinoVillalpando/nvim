@@ -19,14 +19,36 @@ return {
 
     config = function()
         require("conform").setup({
-            formatters_by_ft = {
+            format_on_save = true,
+              formatters_by_ft = {
                 lua = { "stylua" },
                 -- Conform will run multiple formatters sequentially
                 python = { "isort", "black" },
                 -- You can customize some of the format options for the filetype (:help conform.format)
                 rust = { "rustfmt", lsp_format = "fallback" },
-                -- Conform will run the first available formatter
-                javascript = { "prettierd", "prettier", stop_after_first = true },
+                vue = { "prettierd", "prettier", stop_after_first = true, lsp_format = "fallback" },
+                ts = {"prettierd", "prettier", stop_after_first = true, lsp_format = "fallback" },
+                typescriptvue = {"prettierd", "prettier", stop_after_first = true, lsp_format = "fallback" }
+            },
+            formatters = {
+                prettier = {
+                    require_cwd = true,
+
+                    cwd = require("conform.util").root_file({
+                        ".prettierrc",
+                        ".prettierrc.json",
+                        ".prettierrc.yml",
+                        ".prettierrc.yaml",
+                        ".prettierrc.json5",
+                        ".prettierrc.js",
+                        ".prettierrc.cjs",
+                        ".prettierrc.mjs",
+                        ".prettierrc.toml",
+                        "prettier.config.js",
+                        "prettier.config.cjs",
+                        "prettier.config.mjs",
+                    })
+                }
             }
         })
         local cmp = require('cmp')
@@ -38,11 +60,15 @@ return {
             cmp_lsp.default_capabilities())
 
         require("fidget").setup({})
-        require("mason").setup()
+        require("mason").setup({})
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
+                "marksman",
+                "vuels",
+                "volar",
+                "ts_ls"
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -69,6 +95,63 @@ return {
                 end,
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
+                    lspconfig.volar.setup {
+                        init_options = {
+                            vue = {
+                              hybridMode = false,
+                            },
+                          },
+                          settings = {
+                            typescript = {
+                              inlayHints = {
+                                enumMemberValues = {
+                                  enabled = true,
+                                },
+                                functionLikeReturnTypes = {
+                                  enabled = true,
+                                },
+                                propertyDeclarationTypes = {
+                                  enabled = true,
+                                },
+                                parameterTypes = {
+                                  enabled = true,
+                                  suppressWhenArgumentMatchesName = true,
+                                },
+                                variableTypes = {
+                                  enabled = true,
+                                },
+                              },
+                            },
+                          },
+                    }
+                    lspconfig.ts_ls.setup {
+                        init_options = {
+                          plugins = {
+                            {
+                              name = '@vue/typescript-plugin',
+                              location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+                              languages = { 'vue' },
+                            },
+                          },
+                        },
+                        settings = {
+                          typescript = {
+                            tsserver = {
+                              useSyntaxServer = false,
+                            },
+                            inlayHints = {
+                              includeInlayParameterNameHints = 'all',
+                              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                              includeInlayFunctionParameterTypeHints = true,
+                              includeInlayVariableTypeHints = true,
+                              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                              includeInlayPropertyDeclarationTypeHints = true,
+                              includeInlayFunctionLikeReturnTypeHints = true,
+                              includeInlayEnumMemberValueHints = true,
+                            },
+                          },
+                        },
+                      }
                     lspconfig.lua_ls.setup {
                         capabilities = capabilities,
                         settings = {
